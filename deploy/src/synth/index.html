@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="synth.tmpl.css" rel="stylesheet" media="screen">
+    <link href="main.css" rel="stylesheet" media="screen">
+    <script type="text/javascript" src="../base/base.js"></script>
+    <script type="text/javascript" src="main.js"></script>
+</head>
+<body>
+    <h1>Synth</h1>
+    <div id="controls">
+            <button id="start">Start</button>
+            <label for="bpm">BPM</label>
+            <ctrl id="bpm" class="bpm" min="60" max="160" scale="1" value="101" digits="000"></ctrl>
+    </div>
+    
+    <div id="synth1" class="synth"></div>
+    <br/>
+    <div id="synth2" class="synth"></div>
+
+    <div id="con"></div>
+</body>
+</html>

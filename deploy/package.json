@@ -1,0 +1,25 @@
+{
+    "name": "index",
+    "version": "1.0.0",
+    "description": "Document root",
+    "main": "index.js",
+    "scripts": {
+      "debug": "node --inspect index.js",
+      "start": "node index.js"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/ng210/webdev.git"
+    },
+    "keywords": [
+      "nodejs"
+    ],
+    "dependencies": {
+      "express": "^4.9.8"
+    },
+    "author": "Gabor",
+    "license": "ISC",
+    "engines": {
+      "node": "10.x"
+    }
+  }

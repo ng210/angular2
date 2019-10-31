@@ -1,0 +1,32 @@
+body {
+    background-color: gray;
+    font-size: 12px; font-family: Verdana;
+}
+
+#controls {
+    margin:2px; padding: 2px;
+    width:20em; height: 1.8em;
+    border: inset 1px silver;
+}
+
+#bpm {
+    padding:0px; margin: 0px;
+    height: 8px;
+    cursor: pointer;
+}
+
+#con {
+	position:absolute;
+	font-size:10pt;
+	font-family:Consolas;
+	text-align:left;
+	padding:2 4;
+
+	box-sizing: border-box;
+	margin:0;
+	background-color:#102030;
+	color:#208040;
+	opacity:0.5;
+	height:25vh; width:100vw;
+	overflow:hidden auto
+}
