@@ -10,15 +10,30 @@
 <body>
     <h1>Synth</h1>
     <div id="controls">
-            <button id="start">Start</button>
+        <div class="group">
             <label for="bpm">BPM</label>
             <ctrl id="bpm" class="bpm" min="60" max="160" scale="1" value="101" digits="000"></ctrl>
+            <button id="start">Start</button>
+        </div>
+        <div class="group">
+            <button id="import">Import</button>
+            <button id="export">Export</button>
+        </div>
     </div>
-    
+
     <div id="synth1" class="synth"></div>
-    <br/>
+    <div id="pattern1" class="pattern"></div>
+
     <div id="synth2" class="synth"></div>
+    <div id="pattern2" class="pattern"></div>
+
+    <div id="synth3" class="synth"></div>
+    <div id="pattern3" class="pattern"></div>
 
     <div id="con"></div>
+
+    <a id="exportPresets" href="" download="" stlye="display:none"></a>
+    <input type="file" id="fileElem" accept="application/json" style="display:none" onchange="handleImport(this.files)">
+
 </body>
 </html>

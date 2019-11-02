@@ -48,9 +48,9 @@
 }
 
 div.voiceLEDs {
-    padding: 4px 0px 0px 4px;
-    height: 1em;
-    display: inline-block;
+    padding: 2px;
+    height: 0.6em;
+    display: inline-flex;
 }
 
 td.led {
@@ -71,7 +71,7 @@ div.led {
 }
 
 select.preset {
-    width: 20em;
+    width: 12em;
 }
 
 .save.preset {
@@ -92,18 +92,6 @@ select.preset {
 .lfo.lfo1 { top:2px; }
 .lfo.lfo2 { top:36px; }
 .flt.flt1 { top:70px; }
-
-#synth1 {
-    width: 492px; height: 134px;
-    background-color: #606070;
-    border: outset 2px #c0c0e0;
-}
-
-#synth2 {
-    width: 492px; height: 134px;
-    background-color: #606460;
-    border: outset 2px #c0c0e0;
-}
 
 pot {
     position: absolute;

@@ -402,7 +402,7 @@
 	psynth.Filter.prototype.onchange = function(cut) {
 		// Update filter coefficients
 		var res = (this.res.value < 0.000001) ? 1.0: 1.0 - this.res.value;
-		var e = this.cut.value + this.mod.value * cut;
+		var e = (this.cut.value + this.mod.value * cut)/2;
 		var g = -res * e;
 		var b0 = e*e;
 		this.bi[0] = this.bi[1] = b0; this.bi[2] = 2*b0;
@@ -541,19 +541,19 @@
 			}
 			voice.setNote(note, velocity);
 			//this.voices[this.nextVoice].setNote(note, velocity);
-			console.log(`${this.label}.on #${ix}: ${note} - ${voice.getTicks()}`);
+			//console.log(`${this.label}.on #${ix}: ${note} - ${voice.getTicks()}`);
 			return;
 		} else {
 			for (var i=0; i<this.voices.length; i++) {
 				voice = this.voices[i];
 				if (voice.envelopes[0].phase < 5 && voice.note.value == note) {
 					voice.setNote(note, 0);
-					console.log(`${this.label}.off #${i}: ${note}`);
+					//console.log(`${this.label}.off #${i}: ${note}`);
 					return;
 				}
 			}
 		}
-		console.log(`${this.label}.off ???: ${note}`);
+		//console.log(`${this.label}.off ???: ${note}`);
 		//throw new Error('voice not found!');
 	};
 	psynth.Synth.prototype.run = function(buffer, start, end) {

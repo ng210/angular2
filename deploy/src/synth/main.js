@@ -26,21 +26,6 @@ var _samplePerFrame = 0;
 //var _cursor = 0;
 var _buffer = new Float32Array(16*1024);
 
-// function createConfig() {
-//     return [
-//         psynth.Ctrl.amp, 1.0,
-//
-//         psynth.Ctrl.lfo1amp, 0.2, psynth.Ctrl.lfo1dc, 0.5, psynth.Ctrl.lfo1fre, 3.3, psynth.Ctrl.lfo1wave, psynth.WF_SIN,
-//         psynth.Ctrl.lfo2amp, 2.0, psynth.Ctrl.lfo2dc, 0.0, psynth.Ctrl.lfo2fre, 6.1, psynth.Ctrl.lfo1wave, psynth.WF_SIN,
-//
-//         psynth.Ctrl.env1amp, 0.7, psynth.Ctrl.env1dc, 0, psynth.Ctrl.env1atk, 0.0, psynth.Ctrl.env1dec, 0.1, psynth.Ctrl.env1sus, 0.4, psynth.Ctrl.env1rel, 0.2,
-//         psynth.Ctrl.env2amp, 0.28, psynth.Ctrl.env2dc, 0.7,psynth.Ctrl.env2atk, 0.04, psynth.Ctrl.env2dec, 0.1, psynth.Ctrl.env2sus, 0.9, psynth.Ctrl.env2rel, 0.12,
-//
-//         psynth.Ctrl.osc1amp, 0.4, psynth.Ctrl.osc1fre, 1.0, psynth.Ctrl.osc1psw, 0.0, psynth.Ctrl.osc1wave, psynth.WF_TRI, psynth.Ctrl.osc1tune, 0,
-//         psynth.Ctrl.osc2amp, 0.5, psynth.Ctrl.osc2fre, 0.0, psynth.Ctrl.osc2psw, 0.0, psynth.Ctrl.osc2wave, psynth.WF_PLS, psynth.Ctrl.osc2tune, 12
-//     ];
-// }
-
 async function loadTemplate() {
     var res = await load('./synth.tmpl.html');
     if (res.error instanceof Error) {
@@ -60,6 +45,31 @@ async function loadTemplate() {
     _template.synth1 = buildSynthTemplate(res.node.querySelector('div.synth1'));
     // synth2 (bass)
     //_template.synth2 = buildSynthTemplate(res.node.querySelector('div.synth2'));
+}
+
+async function loadPresets() {
+    _presets = JSON.parse(localStorage.getItem('psynth'));
+    if (!_presets) {
+        var res = await load('./presets.json');
+        if (res.error instanceof Error) {
+            _presets = {
+                'default': [
+                    psynth.Ctrl.amp, 1.0,
+            
+                    psynth.Ctrl.lfo1amp, 0.2, psynth.Ctrl.lfo1dc, 0.5, psynth.Ctrl.lfo1fre, 3.3, psynth.Ctrl.lfo1wave, psynth.WF_SIN,
+                    psynth.Ctrl.lfo2amp, 2.0, psynth.Ctrl.lfo2dc, 0.0, psynth.Ctrl.lfo2fre, 6.1, psynth.Ctrl.lfo2wave, psynth.WF_SIN,
+            
+                    psynth.Ctrl.env1amp, 0.7, psynth.Ctrl.env1dc, 0, psynth.Ctrl.env1atk, 0.0, psynth.Ctrl.env1dec, 0.1, psynth.Ctrl.env1sus, 0.4, psynth.Ctrl.env1rel, 0.2,
+                    psynth.Ctrl.env2amp, 0.28, psynth.Ctrl.env2dc, 0.7,psynth.Ctrl.env2atk, 0.04, psynth.Ctrl.env2dec, 0.1, psynth.Ctrl.env2sus, 0.9, psynth.Ctrl.env2rel, 0.12,
+            
+                    psynth.Ctrl.osc1amp, 0.4, psynth.Ctrl.osc1fre, 1.0, psynth.Ctrl.osc1psw, 0.0, psynth.Ctrl.osc1wave, psynth.WF_TRI, psynth.Ctrl.osc1tune, 0,
+                    psynth.Ctrl.osc2amp, 0.5, psynth.Ctrl.osc2fre, 0.0, psynth.Ctrl.osc2psw, 0.0, psynth.Ctrl.osc2wave, psynth.WF_PLS, psynth.Ctrl.osc2tune, 12
+                ]
+            };
+        } else {
+            _presets = res.data;
+        }
+    }
 }
 
 function buildSynthTemplate(synth) {
@@ -134,6 +144,15 @@ async function createSynth(lbl, synth) {
         tr.appendChild(td);
     }
     synthElem.querySelector('div.voiceLEDs').appendChild(tbl);
+    var style = window.getComputedStyle(synthElem);
+    var match = style.backgroundColor.match(/\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/)
+    var color = match != null ? [parseInt(match[1]), parseInt(match[2]), parseInt(match[3])] : _ledColor;
+    for (var i=0; i<3; i++) {
+        color[i] = Math.floor((255 - color[i]) * 1.8);
+        if (color[i] > 255) color[1] = 255;
+    }
+    synth.voiceLeds.color = color;
+
 }
 
 function fillSoundBuffer(buffer, bufferSize) {
@@ -183,10 +202,10 @@ async function createPlayer() {
         ]));
     psynth.SynthAdapter.devices[0].label = 'synth1';
     psynth.SynthAdapter.devices[1].label = 'synth2';
-    //psynth.SynthAdapter.devices[2].label = 'synth3';
+    psynth.SynthAdapter.devices[2].label = 'synth3';
     await createSynth('synth1', psynth.SynthAdapter.devices[0]);
     await createSynth('synth2', psynth.SynthAdapter.devices[1]);
-    //await createSynth('synth3', psynth.SynthAdapter.devices[2]);
+    await createSynth('synth3', psynth.SynthAdapter.devices[2]);
     return player;
 }
 
@@ -223,13 +242,19 @@ async function createChannels() {
     // channel #1
     var channel = new Player.Channel('bass', _player);
     channel.loopCount = 1000;
-    channel.assign(_player.targets[0], sequences[2]);
+    channel.assign(_player.targets[0], sequences[0]);
     _player.channels.push(channel);
 
     // channel #2
-    channel = new Player.Channel('solo', _player);
+    channel = new Player.Channel('chords', _player);
     channel.loopCount = 1000;
     channel.assign(_player.targets[1], sequences[1]);
+    _player.channels.push(channel);
+
+    // channel #3
+    channel = new Player.Channel('mono', _player);
+    channel.loopCount = 1000;
+    channel.assign(_player.targets[2], sequences[2]);
     _player.channels.push(channel);
 }
 
@@ -249,7 +274,7 @@ function main(frame) {
         for (var j=0; j<synth.voiceLeds.length; j++) {
             var led = synth.voiceLeds[j];
             var a = synth.voices[j].envelopes[0].timer;
-            led.style.backgroundColor = `rgba(${_ledColor.join()},${a})`;
+            led.style.backgroundColor = `rgba(${synth.voiceLeds.color.join()},${a})`;
         }
     }
     // paint oscillators
@@ -260,21 +285,7 @@ function updateBpm() {
     _samplePerFrame = Math.floor(48000*7.5/this.pot.value);
 }
 
-function getPresets(select) {
-     _presets = JSON.parse(localStorage.getItem('psynth')) || {
-        'default': [
-            psynth.Ctrl.amp, 1.0,
-    
-            psynth.Ctrl.lfo1amp, 0.2, psynth.Ctrl.lfo1dc, 0.5, psynth.Ctrl.lfo1fre, 3.3, psynth.Ctrl.lfo1wave, psynth.WF_SIN,
-            psynth.Ctrl.lfo2amp, 2.0, psynth.Ctrl.lfo2dc, 0.0, psynth.Ctrl.lfo2fre, 6.1, psynth.Ctrl.lfo2wave, psynth.WF_SIN,
-    
-            psynth.Ctrl.env1amp, 0.7, psynth.Ctrl.env1dc, 0, psynth.Ctrl.env1atk, 0.0, psynth.Ctrl.env1dec, 0.1, psynth.Ctrl.env1sus, 0.4, psynth.Ctrl.env1rel, 0.2,
-            psynth.Ctrl.env2amp, 0.28, psynth.Ctrl.env2dc, 0.7,psynth.Ctrl.env2atk, 0.04, psynth.Ctrl.env2dec, 0.1, psynth.Ctrl.env2sus, 0.9, psynth.Ctrl.env2rel, 0.12,
-    
-            psynth.Ctrl.osc1amp, 0.4, psynth.Ctrl.osc1fre, 1.0, psynth.Ctrl.osc1psw, 0.0, psynth.Ctrl.osc1wave, psynth.WF_TRI, psynth.Ctrl.osc1tune, 0,
-            psynth.Ctrl.osc2amp, 0.5, psynth.Ctrl.osc2fre, 0.0, psynth.Ctrl.osc2psw, 0.0, psynth.Ctrl.osc2wave, psynth.WF_PLS, psynth.Ctrl.osc2tune, 12
-        ]
-    };
+async function getPresets(select) {
     localStorage.setItem('psynth', JSON.stringify(_presets));
     for (var key in _presets) {
         var hasPreset = false;
@@ -383,10 +394,49 @@ function enableWaveform(toggle, enable) {
     toggle.pot.set(waveform);
 }
 
+function importPresets() {
+    const fileElem = document.getElementById("fileElem");
+    fileElem.click();
+}
+
+function handleImport(fileList) {
+    console.log(fileList);
+    if (fileList != null && fileList[0] instanceof File) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                _presets = JSON.parse(e.target.result);
+            } catch (error) {
+                alert('Import resulted in an error\n('+error.message+')');
+                return;
+            }
+            updatePresets();
+            alert('Preset loaded');
+        };        
+        reader.readAsText(fileList[0]);
+    }
+}
+
+function exportPresets() {
+    var fileName = prompt('File name?', 'presets.json');
+    if (fileName != null) {
+        if (!fileName.endsWith('.json')) {
+            fileName = fileName+'.json';
+        }
+        var data = new Blob([JSON.stringify(_presets)], {type: 'application/json'});
+        var url = window.URL.createObjectURL(data);
+        var link = document.getElementById('exportPresets');
+        link.setAttribute('download', fileName);
+        link.href = url;
+        link.click();
+        window.URL.revokeObjectURL(url)
+    }
+    
+}
+
 async function onpageload(e) {
     Dbg.init('con');
 
-    //var content = document.getElementById('content');
     _startButton = document.getElementById('start');
     _startButton.onclick = function() {
         if (_isRunning) {
@@ -405,13 +455,16 @@ async function onpageload(e) {
     _bpm = new psynth.Pot(0, 1, 0);
     Pot.bind(bpm, _bpm);
     updateBpm.call(bpm);
+   
+    document.getElementById('import').onclick = importPresets;
+    document.getElementById('export').onclick = exportPresets;
 
     await loadTemplate();
 
+    await loadPresets();
+
     await createChannels();
 
-    // await createSynth('synth1', 4);
-    // await createSynth('synth2', 6);
     sound.init(48000, fillSoundBuffer);
     main();
 }

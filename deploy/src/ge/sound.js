@@ -27,6 +27,7 @@
             };
             this.fillBuffer = callback || function(buffer, count) {};
             this.audioNode.connect(this.context.destination);
+            this.context.suspend();
         },
 
         start: function() {

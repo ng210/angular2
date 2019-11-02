@@ -1,18 +1,47 @@
 body {
     background-color: gray;
-    font-size: 12px; font-family: Verdana;
+    font-family: Verdana;
 }
 
 #controls {
-    margin:2px; padding: 2px;
-    width:20em; height: 1.8em;
-    border: inset 1px silver;
+    margin:1em 0em; padding: 0px;
+    width:20em; height: 1.4em;
+}
+
+div.group {
+    box-sizing: border-box;
+    display: inline-block;
+    padding: 2px 4px;
+    margin:0px;
+    border: groove 2px silver;
+}
+
+#start {
+    width: 3em;
 }
 
 #bpm {
-    padding:0px; margin: 0px;
+    /* padding:0px; margin: 0px; */
     height: 8px;
     cursor: pointer;
+}
+
+#synth1 {
+    width: 492px; height: 134px;
+    background-color: #606080;
+    border: outset 2px #c0c0e0;
+}
+
+#synth2 {
+    width: 492px; height: 134px;
+    background-color: #608060;
+    border: outset 2px #c0c0e0;
+}
+
+#synth3 {
+    width: 492px; height: 134px;
+    background-color: #c09040;
+    border: outset 2px #c0c0e0;
 }
 
 #con {
@@ -29,4 +58,10 @@ body {
 	opacity:0.5;
 	height:25vh; width:100vw;
 	overflow:hidden auto
+}
+
+button {
+    padding:0px;
+    font-size: 10pt;
+    font-family: Consolas;
 }
