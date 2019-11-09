@@ -538,7 +538,7 @@ try {
                             case 'x-shader/x-vertex':
                             case 'x-shader/x-fragment':
                                 node = document.createElement('script');
-                                node.setAttribute('type', contentType);
+                                node.setAttribute('type', options.contentType);
                                 node.innerHTML = data;
                                 node.url = options.url;
                                 document.head.appendChild(node);
