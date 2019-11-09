@@ -1,0 +1,8 @@
+div.titlebar {
+    color: #000000;
+    font-family: Verdana;
+    font-size: 11pt;
+    padding: 2px;
+    background-color: #6070a0;
+    border: solid 2px #405080
+}
