@@ -1,0 +1,36 @@
+// sequence #1
+// 1  2  3  4  5  6  7  8
+// C  -  C  -  C  -   C- C-
+// #1
+frame(0, on(C1, 140))
+frame(2, off(C1))
+// #3
+frame(2, on(C2, 115))
+frame(3, off(C2))
+// #5
+frame(1, on(C1, 145))
+frame(2, off(C1))
+// #6
+frame(1, on(C2, 205))
+frame(1, off(C2))
+// #7
+frame(2, on(C2, 155))
+frame(1, off(C2))
+// #9
+frame(1, end)
+
+// sequence #2
+frame(0, on(C3, 245), on(D#3, 202), on(E3, 180))
+frame(30, off(C3), off(D#3), off(E3))
+frame(2, end)
+
+// sequence #3
+frame(0, on(C3, 185))
+frame(1, off(C3))
+frame(1, on(C2, 205))
+frame(1, off(C2))
+frame(1, on(C2, 245))
+frame(1, off(C2))
+frame(1, on(E3, 225))
+frame(1, off(E3))
+frame(1, end)

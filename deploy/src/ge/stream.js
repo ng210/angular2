@@ -59,8 +59,19 @@
     Stream.prototype.writeStream = function(stream, offset, length) {
         var byteCount = length || stream.length - offset;
         ensureSize(this, byteCount);
-        for (var i=offset; i<stream.length; i++) {
+        for (var i=offset; i<offset+byteCount; i++) {
             this.view.setUint8(this.cursor++, stream.readUint8(i));
+        }
+        if (this.cursor > this.length) {
+            this.length = this.cursor;
+        }
+    };
+
+    Stream.prototype.writeBytes = function(array, offset, length) {
+        var byteCount = length || array.length - offset;
+        ensureSize(this, byteCount);
+        for (var i=offset; i<offset+byteCount; i++) {
+            this.view.setUint8(this.cursor++, array[i]);
         }
         if (this.cursor > this.length) {
             this.length = this.cursor;

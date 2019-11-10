@@ -97,7 +97,7 @@ include('/synth/synth.js');
 					}
 					break;
 		   }
-		   return cursor;
+		   return new Stream(stream);
 		}
 	};
 	psynth.SynthAdapter.__proto__ = Player.IAdapter;

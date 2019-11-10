@@ -170,6 +170,28 @@ include('/ge/stream.js');
         return startPlayBack(channel);
     }
 
+    function test_sequence_toFrames() {
+        var errors = [];
+        Dbg.prln('Test Sequence.toFrames');
+        var player = createPlayer();
+        var sequence = createTestSequences()[0];
+        var frames = sequence.toFrames(player);
+        // check frames
+        if (frames.length != 6) errors.push('Frame count is not 5!');
+        var fi = 0;
+        for (; fi<5; fi++) {
+            var frame = frames[fi];
+            if (frame.delta != 16) errors.push(`Frame #${fi+1} delta is not 16!`);
+            if (frame.commands.length != 2) errors.push(`Frame #${fi+1} does not have exactly 2 commands!`);
+            if (frame.commands[0].readUint8(0) != TestAdapter.SETTEXT) errors.push(`Frame #${fi+1} command is not SETTEXT!`);
+        }
+        var frame = frames[fi];
+        if (frame.delta != 16) errors.push(`Frame #${fi+1} delta is not 16!`);
+        if (frame.commands.length != 1) errors.push(`Frame #${fi+1} does not have exactly 1 commands!`);
+        if (frame.commands[0].readUint8(0) != TestAdapter.SETINK) errors.push(`Frame #${fi+1} command is not SETINK!`);
+        return errors.length > 0 ? errors.join('\n') : 'Tests successful!';
+    }
+
     function test_channel_toFrames() {
         var errors = [];
         Dbg.prln('Test Channel.toFrames');
@@ -256,8 +278,8 @@ include('/ge/stream.js');
     var tests = async function() {
         //Dbg.prln(await test_channel_run());
         Dbg.prln(test_channel_toFrames());
+        Dbg.prln(test_sequence_toFrames());
         Dbg.prln(test_channel_toStream());
-debugger;
         Dbg.prln(await test_channel_insertFrame());
         //Dbg.prln(test_channel_deleteFrames());
         return 0;

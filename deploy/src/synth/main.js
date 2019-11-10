@@ -9,7 +9,11 @@ include('/ge/player/player.js');
 include('/utils/syntax.js');
 include('grammar.js');
 
+include('/ui/multichart.js');
+include('framedataseries.js');
+
 var _synth = null;
+var _synthCount = 3;
 var _isRunning = false;
 //var _config1 = null;
 var _frame = 0;
@@ -25,6 +29,23 @@ var _player = null;
 var _samplePerFrame = 0;
 //var _cursor = 0;
 var _buffer = new Float32Array(16*1024);
+
+
+
+var _masterTune = 12;
+
+
+
+var _patternConfig = {
+    'width': 320,
+    'height': 120,
+    'grid-color': [0.3, 0.4, 0.5],
+    'unit': [10, 5],
+    'titlebar': 'Pattern1'
+};
+
+var _patternUi = [];
+var _patterns = [];
 
 async function loadTemplate() {
     var res = await load('./synth.tmpl.html');
@@ -91,7 +112,9 @@ async function createSynth(lbl, synth) {
     //var synth = new psynth.Synth(48000, voiceCount);
     voiceCount = synth.voices.length;
     _synths.push(synth);
-    var synthElem = document.getElementById(lbl);
+    var synthElem = document.createElement('DIV');
+    synthElem.id = lbl;
+    synthElem.className = 'synth';
     synthElem.innerHTML = _template.synth1.innerHTML.replace(/{{id}}/g, lbl);
     synthElem.synth = synth;
 
@@ -153,6 +176,29 @@ async function createSynth(lbl, synth) {
     }
     synth.voiceLeds.color = color;
 
+    return synthElem;
+}
+
+function multiChartOnClick(ctrl, e) {
+    this.__proto__.onclick.call(this, ctrl, e);
+    this.dataSource.sequence.fromFrames(this.dataSource.data);
+    return true;
+}
+
+async function createPatternUi(id, el) {
+    var lbl = `Pattern${id}`;
+    var multiChart = new Ui.MultiChart(`${lbl}_chart`, _patternConfig, null);
+    multiChart.template.titlebar = lbl;
+    multiChart.dataBind(_patterns[id]);
+    multiChart.selectedChannelId = psynth.SynthAdapter.SETNOTE;
+    multiChart.onclick = multiChartOnClick;
+    var ix = _patternUi.length;
+    _patternUi.push(multiChart);
+    var info = _patterns[ix].getRange(multiChart.selectedChannelId, 0, 255);
+    console.log(info.max);
+    multiChart.scroll(0, -12*10);
+    multiChart.uniforms.uRange = info.max;
+    await multiChart.render({'element': el});
 }
 
 function fillSoundBuffer(buffer, bufferSize) {
@@ -184,29 +230,68 @@ function fillSoundBuffer(buffer, bufferSize) {
     }
 }
 
-var _masterTune = 12;
 var tones = {
     'c': 0, 'c#': 1, 'd': 2, 'd#': 3, 'e': 4, 'f':5, 'f#': 6, 'g': 7, 'g#': 8, 'a': 9, 'a#': 10, 'h': 11,
     'C': 12, 'C#': 13, 'D': 14, 'D#': 15, 'E': 16, 'F':17, 'F#':18, 'G':19, 'G#':20, 'A':21, 'A#':22, 'H':23
 };
 
-async function createPlayer() {
-    var player = new Player();
-    player.adapters[psynth.SynthAdapter.getInfo().id] = psynth.SynthAdapter;
-    psynth.SynthAdapter.createTargets(player.targets, new Uint8Array(
+async function initializePlayer() {
+    _player = new Player();
+    // ADAPTERS
+    // add adapter singletons
+    _player.adapters[psynth.SynthAdapter.getInfo().id] = psynth.SynthAdapter;
+    // initialize adapters: create targets and create context
+    psynth.SynthAdapter.createTargets(_player.targets, new Uint8Array(
         [
-                3,  // 2 devices
+                3, 
                 psynth.SynthAdapter.DEVICE_SYNTH, 2,    // synth with 2 voices
                 psynth.SynthAdapter.DEVICE_SYNTH, 6,    // synth with 6 voices
-                psynth.SynthAdapter.DEVICE_SYNTH, 2     // synth with 4 voices
+                psynth.SynthAdapter.DEVICE_SYNTH, 2     // synth with 2 voices
         ]));
-    psynth.SynthAdapter.devices[0].label = 'synth1';
-    psynth.SynthAdapter.devices[1].label = 'synth2';
-    psynth.SynthAdapter.devices[2].label = 'synth3';
-    await createSynth('synth1', psynth.SynthAdapter.devices[0]);
-    await createSynth('synth2', psynth.SynthAdapter.devices[1]);
-    await createSynth('synth3', psynth.SynthAdapter.devices[2]);
-    return player;
+
+    //psynth.SynthAdapter.createContext();
+    sound.init(48000, fillSoundBuffer);
+
+    // SEQUENCES
+    var sequences = await createSequences('demo02.seq');
+
+    for (var i=0; i<_synthCount; i++) {
+        // var sequence = new Player.Sequence(psynth.SynthAdapter.getInfo().id);
+        // // init sequence
+        // sequence.writeHeader();
+        // var delta = 0;
+        // for (var j=0; j<16; j++) {
+        //     // note on
+        //     sequence.writeDelta(delta);
+        //     sequence.writeCommand(psynth.SynthAdapter.SETNOTE);
+        //     sequence.writeUint8(_masterTune);
+        //     sequence.writeUint8(127);
+        //     // end of frame
+        //     sequence.writeEOF();
+        //     delta = 1;
+        //     // note off
+        //     sequence.writeDelta(delta);
+        //     sequence.writeCommand(psynth.SynthAdapter.SETNOTE);
+        //     sequence.writeUint8(_masterTune);
+        //     sequence.writeUint8(0);
+        //     // end of frame
+        //     sequence.writeEOF();
+        // }
+        // // end of sequence
+        // sequence.writeDelta(delta);
+        // sequence.writeEOS();
+
+        var sequence = sequences[i];
+
+        _patterns[i] = new FrameDataSeries(sequence.toFrames(_player), psynth.SynthAdapter);
+        _patterns[i].sequence = sequence;
+
+        // create channel
+        var channel = new Player.Channel(`channel${i}`, _player);
+        channel.loopCount = 1000;
+        channel.assign(_player.targets[i], sequence);
+        _player.channels.push(channel);
+    }
 }
 
 async function createSequences(path) {
@@ -233,29 +318,6 @@ async function createSequences(path) {
     }
     Dbg.prln(`${sequences.length} sequences loaded.`);
     return sequences;
-}
-
-async function createChannels() {
-    _player = await createPlayer();
-    var sequences = await createSequences('demo01.seq');
-
-    // channel #1
-    var channel = new Player.Channel('bass', _player);
-    channel.loopCount = 1000;
-    channel.assign(_player.targets[0], sequences[0]);
-    _player.channels.push(channel);
-
-    // channel #2
-    channel = new Player.Channel('chords', _player);
-    channel.loopCount = 1000;
-    channel.assign(_player.targets[1], sequences[1]);
-    _player.channels.push(channel);
-
-    // channel #3
-    channel = new Player.Channel('mono', _player);
-    channel.loopCount = 1000;
-    channel.assign(_player.targets[2], sequences[2]);
-    _player.channels.push(channel);
 }
 
 function update() {
@@ -434,6 +496,24 @@ function exportPresets() {
     
 }
 
+async function buildUi() {
+    var tab = document.getElementById('modules');
+    for (var i=0; i<_synthCount; i++) {
+        var tr = document.createElement('TR');
+        // create synth
+        var td = document.createElement('TD');
+        var lbl = 'synth' + (i+1);
+        psynth.SynthAdapter.devices[i].label = lbl;
+        td.appendChild(await createSynth(lbl, psynth.SynthAdapter.devices[i]));
+        tr.appendChild(td);
+        // create pattern
+        td = document.createElement('TD');
+        await createPatternUi(i, td);
+        tr.appendChild(td);
+        tab.appendChild(tr);
+    }
+}
+
 async function onpageload(e) {
     Dbg.init('con');
 
@@ -463,8 +543,9 @@ async function onpageload(e) {
 
     await loadPresets();
 
-    await createChannels();
+    await initializePlayer();
 
-    sound.init(48000, fillSoundBuffer);
+    await buildUi();
+    
     main();
 }

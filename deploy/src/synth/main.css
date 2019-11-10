@@ -44,6 +44,28 @@ div.group {
     border: outset 2px #c0c0e0;
 }
 
+div.titlebar {
+    color: #000000;
+    font-family: Verdana;
+    font-size: 11pt;
+    padding: 2px;
+    background-color: #6070a0;
+    border: solid 2px #405080
+}
+
+div.pattern {
+    box-sizing: border-box;
+    display: inline-block;
+    /* width: 640px;
+    height: 360px; */
+}
+
+#pattern1_chart {
+    position: relative;
+    box-sizing: border-box;
+    display: inline-block;
+}
+
 #con {
 	position:absolute;
 	font-size:10pt;

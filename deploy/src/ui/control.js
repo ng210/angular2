@@ -165,15 +165,10 @@ include('/ui/datalink.js');
 			if (handlers != undefined) {
 				for (var i=0; i<handlers.length; i++) {
 					var handler = handlers[i];
-if (control != handler.obj) {
-	console.log(' *** not the same objects!!!');
-}
-					handler.fn.call(handler.obj, control, e);
-					// if (typeof this.getValue === 'function') {
-					// 	handler.fn.call(handler.obj, this, this.getValue());
-					// } else {
-					// 	handler.fn.call(handler.obj, control);
-					// }
+// if (control != handler.obj) {
+// 	console.log(' *** not the same objects!!!');
+// }
+					if (handler.fn.call(handler.obj, control, e)) break;
 				}
 			}
 		}
