@@ -76,7 +76,7 @@ include('/webgl/webgl.js');
         Ui.MultiChart.render(this);
     };
     Ui.MultiChart.prototype.initializeWebGL = async function() {
-        const gl = this.canvas.getContext('webgl2');
+        const gl = this.canvas.getContext('webgl');
         // load shaders and build program
         if (this.path != null) {
             var files = [
