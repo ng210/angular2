@@ -37,11 +37,11 @@ vec3 getColor(vec2 displace) {
    coors += displace;   //*sin(0.0005*uFrame + 20.0*3.14*displace + 0.0*coors.y * 3.14);
    vec2 pos = coors - uOffset;
    vec2 m = mod(pos, uUnit);
-   float dist = 0.8 * smoothstep(0.9, 0.1, distance(uSize/2.0, pos)/uSize.x);
+   float dist = mix(1.0, smoothstep(0.9, 0.1, distance(uSize/2.0, coors)/uSize.x), 0.6);
    if (!hasDataPoint(pos)) {
-      col = mix(1.0, step(-uRange*uUnit.x, -pos.x), 0.8)*uGridColor*(dist + 0.4*(step(uUnit.x-1.0, m.x) + step(uUnit.y-1.0, m.y)));
+      col = mix(1.0, step(-uRange*uUnit.x, -pos.x), 0.7)*uGridColor*(dist + 0.8*(step(uUnit.x-1.0, m.x) + step(uUnit.y-1.0, m.y)));
    } else {
-      col = dist*vec3(1.0, 0.5, 0.5);
+      col = dist*vec3(1.0, 0.8, 0.5);
    }
    vec2 diff = coors - start;
    vec2 select = step(0.0, diff) * step(-uUnit, -diff);
@@ -57,7 +57,8 @@ void main()
    //float raster = mod(3.7*uFrame, uSize.y);
    //vec2 seed = 4.0*vec2(rand(gl_FragCoord.xy), rand(-gl_FragCoord.xy));
    float amp = 0.2;
-   float dist = 1.41 + 0.6*sin(rand(vec2(uFrame, uFrame)*uFrame));
+   float dist = 1.1;
+   float f = 0.4; //0.4 * (1.0 + sin(0.4*uFrame));
    //float length = 0.1;
    for (int i=0; i<4; i++) {
       //col += amp*getColor(4.0*sin(6.28*(clamp((raster - gl_FragCoord.y)/uSize.y, 0.0, 0.1) );
@@ -69,7 +70,8 @@ void main()
       tmp += amp*getColor(vec2(dist, dist));
       col += tmp/4.0;
       amp *= 0.8;
-      dist *= 1.51 + 0.5*rand(0.01*uFrame*gl_FragCoord.yx);
+      dist *= 1.5 + f;
    }
+   
    gl_FragColor = vec4(col, 1.0);
 }

@@ -39,7 +39,7 @@ var _masterTune = 12;
 var _patternConfig = {
     'width': 320,
     'height': 120,
-    'grid-color': [0.3, 0.4, 0.5],
+    'grid-color': [0.20, 0.24, 0.30],
     'unit': [10, 5],
     'titlebar': 'Pattern1'
 };
@@ -89,6 +89,7 @@ async function loadPresets() {
             };
         } else {
             _presets = res.data;
+            Dbg.prln(`${Object.keys(_presets).length} presets loaded.`);
         }
     }
 }

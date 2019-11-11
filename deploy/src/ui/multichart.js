@@ -132,6 +132,7 @@ include('/webgl/webgl.js');
         // this.gl.disableVertexAttribArray(0);
         // this.gl.useProgram(0);
     };
+
     Ui.MultiChart.prototype.onmousemove = function(ctrl, e) {
         var pos = [e.layerX, e.layerY];
         if (this.gl) {
@@ -148,7 +149,6 @@ include('/webgl/webgl.js');
             if (info.count > 0) {
                 this.gl.uniform1i(this.program.uniforms.uPointCount.ref, info.count);
                 this.gl.uniform2fv(this.program.uniforms.uDataPoints.ref, data);
-                console.log(data);
             }
         }
     }
@@ -187,7 +187,7 @@ include('/webgl/webgl.js');
         clearTimeout(instance.timer);
         if (instance.isRunning) {
             instance.paint();
-            instance.timer = setTimeout(Ui.MultiChart.render, 60, instance);
+            instance.timer = setTimeout(Ui.MultiChart.render, 50, instance);
         }
     };
 

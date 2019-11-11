@@ -12,7 +12,7 @@ include('/ui/multichart/testdataseries.js');
         var config1 = {
             'width': 720,
             'height': 360,
-            'grid-color': [0.1, 0.2, 0.5],
+            'grid-color': [0.2, 0.4, 0.6],
             'unit': [20, 15],
             'titlebar': 'Test1'
         };
