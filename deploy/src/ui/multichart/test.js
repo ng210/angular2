@@ -8,18 +8,28 @@ include('/ui/multichart/testdataseries.js');
     var pollTimer_ = null;
 
     async function test_multichart() {
-        var dataSeries = new TestDataSeries();
-        var config1 = {
+        var dataSeries = new TestDataSeries.ComplexSeries();
+        var config = {
             'width': 720,
             'height': 360,
             'grid-color': [0.2, 0.4, 0.6],
             'unit': [20, 15],
             'titlebar': 'Test1'
         };
-        ctrls_.push(new Ui.MultiChart('test1', config1, null));
-        ctrls_.push(new Ui.MultiChart('test2', { titlebar: 'Test2' }, null, '/ui/multichart/shaders/default'));
-        //ctrls_[0].onclick = e => { ctrls_[0].isRunning = false; isDone_ = true; };
-        ctrls_[0].dataBind(dataSeries);
+        var multiChart = new Ui.MultiChart('test1', config, null);
+        multiChart.dataBind(dataSeries);
+        multiChart.selectedChannelId = 'ints';
+        ctrls_.push(multiChart);
+
+        dataSeries = new TestDataSeries.SimpleSeries();
+        config = {
+            'titlebar': 'Test2'
+        };
+        multiChart = new Ui.MultiChart('test2', config, null);
+        multiChart.dataBind(dataSeries);
+        multiChart.selectedChannelId = 0;
+        ctrls_.push(multiChart);
+        //multiChart.onclick = function(ctrl) { ctrl.isRunning = false; isDone_ = true; };
 
         for (var i=0; i<ctrls_.length; i++) {
             await ctrls_[i].render({'element': document.body});

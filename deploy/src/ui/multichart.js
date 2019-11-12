@@ -145,10 +145,11 @@ include('/webgl/webgl.js');
         length = length || this.uniforms.uSize[0] / this.uniforms.uUnit[0];
         var data = [];
         if (this.dataSource) {
-            var info = this.dataSource.getRange(this.selectedChannelId, start, length, data);
-            if (info.count > 0) {
-                this.gl.uniform1i(this.program.uniforms.uPointCount.ref, info.count);
-                this.gl.uniform2fv(this.program.uniforms.uDataPoints.ref, data);
+            var range = { start:start, end:start+length, step:1.0 };
+            var points = this.dataSource.getRange(this.selectedChannelId, range);
+            if (range.count > 0) {
+                this.gl.uniform1i(this.program.uniforms.uPointCount.ref, range.count);
+                this.gl.uniform2fv(this.program.uniforms.uDataPoints.ref, points);
             }
         }
     }
