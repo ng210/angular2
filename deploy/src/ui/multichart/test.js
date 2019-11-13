@@ -13,7 +13,7 @@ include('/ui/multichart/testdataseries.js');
             'width': 720,
             'height': 360,
             'grid-color': [0.2, 0.4, 0.6],
-            'unit': [20, 15],
+            'unit': [20, 16],
             'titlebar': 'Test1'
         };
         var multiChart = new Ui.MultiChart('test1', config, null);
@@ -33,16 +33,17 @@ include('/ui/multichart/testdataseries.js');
 
         for (var i=0; i<ctrls_.length; i++) {
             await ctrls_[i].render({'element': document.body});
+            break;
         }
         ctrls_[0].element.style.width = '720px';
-        ctrls_[1].element.style.width = '300px';
+        //ctrls_[1].element.style.width = '300px';
         return new Promise(resolve => poll(resolve) );
     }
 
     function poll(resolve) {
         clearTimeout(pollTimer_);
         if (!isDone_) {
-            pollTimer_ = setTimeout(poll, 100, resolve);
+            pollTimer_ = setTimeout(poll, 1000, resolve);
         } else {
             resolve();
         }

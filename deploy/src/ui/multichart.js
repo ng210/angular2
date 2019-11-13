@@ -128,9 +128,13 @@ include('/webgl/webgl.js');
         // set uniforms
         this.uniforms.uFrame = this.frame++;
         this.program.setUniforms(this.gl, this.uniforms);
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.the2triangles);
+        this.gl.enableVertexAttribArray(0);
+        this.gl.useProgram(this.program.prg);
         this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
-        // this.gl.disableVertexAttribArray(0);
-        // this.gl.useProgram(0);
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, 0);
+        this.gl.disableVertexAttribArray(0);
+        this.gl.useProgram(0);
     };
 
     Ui.MultiChart.prototype.onmousemove = function(ctrl, e) {
@@ -148,6 +152,7 @@ include('/webgl/webgl.js');
             var range = { start:start, end:start+length, step:1.0 };
             var points = this.dataSource.getRange(this.selectedChannelId, range);
             if (range.count > 0) {
+console.log('update data points');
                 this.gl.uniform1i(this.program.uniforms.uPointCount.ref, range.count);
                 this.gl.uniform2fv(this.program.uniforms.uDataPoints.ref, points);
             }
@@ -188,7 +193,7 @@ include('/webgl/webgl.js');
         clearTimeout(instance.timer);
         if (instance.isRunning) {
             instance.paint();
-            instance.timer = setTimeout(Ui.MultiChart.render, 50, instance);
+            instance.timer = setTimeout(Ui.MultiChart.render, 60, instance);
         }
     };
 

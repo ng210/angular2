@@ -26,11 +26,13 @@ include('/ui/idataseries.js');
             'floats': []
         };
         // data is created in sorting order
-        for (var i=0; i<20; i++) {
-            series.ints.push(new TestData(i, i));
-            series.ints.push(new TestData(i, i + 2));
-            series.floats.push(new TestData(0.1*i, 0.5*i));
-            series.floats.push(new TestData(0.2*i, 0.5*i + 2));
+        for (var i=0; i<36; i++) {
+            var v = 0.5*(1.0 + Math.sin(i*Math.PI/18.0));
+            var vi = Math.floor(20.0*v);
+            series.ints.push(new TestData(i, vi));
+            series.ints.push(new TestData(i, Math.floor(10.0-0.5*vi)));
+            series.floats.push(new TestData(0.1*i, v));
+            series.floats.push(new TestData(0.2*i, 1.0 - v));
         }
         IDataSeries.call(this, series);
         this.constructor = ComplexSeries;
@@ -63,18 +65,19 @@ include('/ui/idataseries.js');
     };
 
 	ComplexSeries.prototype.set = function(seriesId, ix, value) {
+        var series = this.data[seriesId];
         var indices = this.findIndex(seriesId, item => item.x == ix);
         if (indices.length > 0) {
-            var series = this.data[seriesId];
             for (var i=0; i<indices.length; i++) {
                 var item = series[indices[i]];
-                if (item.y == value) {
+                var diff = item.y - value;
+                if (diff <= Number.EPSILON && diff >= -Number.EPSILON) {
                     var oldValue = series.splice(indices[i], 1)[0];
                     return oldValue;
                 }
             }
-            series.splice(ix, 0, new TestData(ix, value));
         }
+        series.splice(ix, 0, new TestData(ix, value));
         return null;
     };
 
