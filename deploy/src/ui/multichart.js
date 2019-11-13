@@ -22,12 +22,12 @@ include('/webgl/webgl.js');
 
         this.program = null;
         this.uniforms = {
-            uSize: [300.0, 240.0],
-            uOffset: [0.0, 0.0],
+            uSize: new Float32Array([300.0, 240.0]),
+            uOffset: new Float32Array([0.0, 0.0]),
             uRange: 0.0,
-            uZoom: [1.0, 1.0],
-            uUnit: template.unit,
-            uGridColor: template['grid-color'],
+            uZoom: new Float32Array([1.0, 1.0]),
+            uUnit: new Float32Array(template.unit),
+            uGridColor: new Float32Array(template['grid-color']),
             uFrame: 0
         };
         this.the2triangles = null;
@@ -128,13 +128,7 @@ include('/webgl/webgl.js');
         // set uniforms
         this.uniforms.uFrame = this.frame++;
         this.program.setUniforms(this.gl, this.uniforms);
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.the2triangles);
-        this.gl.enableVertexAttribArray(0);
-        this.gl.useProgram(this.program.prg);
         this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, 0);
-        this.gl.disableVertexAttribArray(0);
-        this.gl.useProgram(0);
     };
 
     Ui.MultiChart.prototype.onmousemove = function(ctrl, e) {
@@ -152,9 +146,8 @@ include('/webgl/webgl.js');
             var range = { start:start, end:start+length, step:1.0 };
             var points = this.dataSource.getRange(this.selectedChannelId, range);
             if (range.count > 0) {
-console.log('update data points');
                 this.gl.uniform1i(this.program.uniforms.uPointCount.ref, range.count);
-                this.gl.uniform2fv(this.program.uniforms.uDataPoints.ref, points);
+                this.gl.uniform2fv(this.program.uniforms.uDataPoints.ref, new Float32Array(points));
             }
         }
     }
