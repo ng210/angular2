@@ -1,0 +1,82 @@
+{
+    "template": {
+        "width": {
+            "type":"ddlist", "data-field": "width", "label":true,
+            "items": [64, 128, 256],
+            "events": ["change"]
+        },
+        "height": {
+            "type":"ddlist", "data-field": "height", "label":true,
+            "items": [64, 128, 256],
+            "events": ["change"]
+        },
+        "noise": {
+            "type": "grid",
+            "data-field": "noises",
+            "row-template": {
+                "on": {
+                    "type":"checkbox", "data-field":"on",
+                    "events": ["change"]
+                },
+                "type": {
+                    "type":"ddlist", "data-field":"type",
+                    "items": ["value"],
+                    "events": ["change"]
+                },
+                "amp": {
+                    "type":"textbox", "data-field":"amp",
+                    "data-type":"float", "min": "0.1", "max": "1.0", "value": "0.5", "step": "0.1",
+                    "events": ["change"]
+                },
+                "fre": {
+                    "type":"textbox", "data-field":"fre",
+                    "data-type":"float", "min": "1.0", "max": "16.0", "value": "2.0", "step": "0.1",
+                    "events": ["change"]
+                }
+            }
+        },
+        "filter": {
+			"type": "grid",
+			"data-field": "filters",
+			"row-template": {
+                "on": {
+                    "type":"checkbox", "data-field":"on",
+                    "events": ["change"]
+                },
+                "matrix": {
+                    "type": "grid",
+                    "data-field": "matrix",
+                    "cols": 3,
+                    "cell-template": {
+                        "type":"textbox",
+                        "data-type":"float", "min": "-1.0", "max": "1.0", "step": "0.1",
+                        "events": ["change"]
+                    }       
+                }
+
+			}
+        }
+    },
+    "settings": {
+        "width": "64",
+        "height": "64",
+        "noises": [
+            {
+                "on": true,
+                "type": "value",
+                "amp": 0.41,
+                "fre": 2.72
+            }
+        ],
+        "filters": [
+            {
+                "on": true,
+                "matrix": [
+                    [ 2.0,  1.0,  0.0],
+                    [ 1.0,  0.7, -1.0],
+                    [ 0.0, -1.0, -2.0]
+                ]
+            }
+        ]
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "template": {
+        "images": {
+            "type":"ddlist", "data-field": "images", "label":true,
+            "events": ["change"]
+        },
+        "motion": {
+            "type":"slider", "data-field": "motion",
+            "data-type":"float", "min": 0.0, "max": 1.0, "step": 0.1
+        },
+        "feedback": {
+            "type":"slider", "data-field": "feedback",
+            "data-type":"float", "min": 0.0, "max": 1.0, "step": 0.1
+        },
+        "cooling": {
+            "type":"slider", "data-field": "cooling",
+            "data-type":"float", "min": 0.0, "max": 0.1, "step": 0.01
+        },
+        "color": {
+            "type":"ddlist", "data-field": "color", "label":true,
+            "items": ["fire", "gas"]
+        }
+    },
+    "settings": {
+        "images": 2,
+        "motion": 0.7,
+        "feedback": 0.7,
+        "cooling": 0.05,
+        "color": "fire"
+    }
+}

@@ -1,2 +1,1 @@
-deploy/node_modules/
-nodejs/node_modules/
+node_modules/*

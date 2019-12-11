@@ -1,0 +1,12 @@
+body			{ background-color: silver }
+#info			{ background-color:#e0e0e0;border:inset 2px silver; }
+#panel			{ border:groove 2px silver; }
+#title			{ background-color:#e0e0e0;border:groove 2px silver;
+			  text-align:center; padding:4px;
+			  width:128px;
+			  font-family:verdana;font-weight:bold;font-size:10pt; }
+td.label		{ border:groove 2px silver; padding:0px; }
+td.value		{ border:groove 2px silver; padding:0px; }
+
+input.menu		{ border:inset 1px silver;
+			}

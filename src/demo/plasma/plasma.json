@@ -1,0 +1,32 @@
+{
+    "template": {
+        "zoom": {
+            "type":"slider", "data-field": "zoom",
+            "data-type":"float", "min": 1.0, "max": 40.0, "step": 0.5
+        },
+        "variation": {
+            "type":"slider", "data-field": "variation",
+            "data-type":"float", "min": 0.0, "max": 2.0, "step": 0.1
+        },
+        "shape": {
+            "type":"slider", "data-field": "shape",
+            "data-type":"float", "min": -3.0, "max": 3.0, "step": 0.1,
+            "events": ["change"]
+        },
+        "motion": {
+            "type":"slider", "data-field": "motion",
+            "data-type":"float", "min": -2.0, "max": 2.0, "step": 0.01
+        },
+        "color": {
+            "type":"slider", "data-field": "color",
+            "data-type":"float", "min": 0.0, "max": 1.0, "step": 0.05
+        }
+    },
+    "settings": {
+        "zoom": 10.0,
+        "motion": 0.5,
+        "variation": 1.0,
+        "shape": 0.0,
+        "color": 0.5
+    }
+}

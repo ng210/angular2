@@ -1,0 +1,12 @@
+body {
+    background-color: silver;
+}
+
+canvas {
+    visibility: hidden;
+}
+
+.label {
+    font-weight: bold; border: groove 2px gray;
+    margin: 2px;
+}

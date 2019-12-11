@@ -1,0 +1,27 @@
+{
+	"template": {
+        "images": {
+            "type":"ddlist", "data-field": "images", "label":true,
+            "events": ["change"]
+        },
+        "intensity": {
+            "type":"slider", "data-field": "intensity", "label":true,
+            "data-type":"float", "min": 0.0, "max": 1.0, "step": 0.1
+        },
+        "radius": {
+            "type":"slider", "data-field": "radius", "label":true,
+            "data-type":"float", "min": 0.0, "max": 1.0, "step": 0.1
+        },
+        "ambient": {
+            "type":"slider", "data-field": "ambient", "label":true,
+            "data-type":"float", "min": -1.0, "max": 1.0, "step": 0.1
+        }
+   },
+    "settings": {
+        "images": 0,
+        "resolution": 1,
+        "intensity": 0.8,
+        "radius": 0.5,
+        "ambient": -0.2
+    }
+}

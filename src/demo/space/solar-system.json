@@ -1,0 +1,18 @@
+{
+    "units": {
+        "AU": 149.6E6,
+        "R": 6378,
+        "M": 5.972E24
+    },
+    "sun": { "radius": 6.957E8, "mass": 332900 },
+    "planets": {
+        "Mercur": { "radius": 0.383, "distance": 0.39, "mass": 0.055 },
+        "Venus": { "radius": 0.949, "distance": 0.72, "mass": 0.815 },
+        "Terra": { "radius": 1.0, "distance": 1.0, "mass": 1 },
+        "Mars": { "radius": 0.533, "distance": 1.52, "mass": 0.107 },
+        "Iupiter": { "radius": 11.209, "distance": 5.20, "mass": 317.899 },
+        "Saturnus": { "radius": 9.449, "distance": 9.54, "mass": 95.162 },
+        "Uranus": { "radius": 4.007, "distance": 19.19, "mass": 14.532 },
+        "Neptunus": { "radius": 3.883, "distance": 30.07, "mass": 17.147 }
+    }
+}

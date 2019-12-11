@@ -1,0 +1,49 @@
+{
+	"template": {
+        "width": {
+            "type":"ddlist", "data-field": "width", "label":true,
+            "items": [16, 64, 128, 256, 384, 512],
+            "events": ["change"]
+        },
+        "height": {
+            "type":"ddlist", "data-field": "height", "label":true,
+            "items": [16, 64, 128, 256, 384, 512],
+            "events": ["change"]
+        },
+        "amp0": {
+            "type":"textbox", "data-field": "amp0", "label":true,
+            "data-type":"float", "min": "0.1", "max": "1.0", "step": "0.1"
+        },
+        "fre0": {
+            "type":"textbox", "data-field": "fre0", "label":true,
+            "data-type":"float", "min": "1.0", "max": "16.0", "step": "0.1"
+        },
+        "amp": {
+            "type":"slider", "data-field": "amp", "label":true,
+            "data-type":"float", "min": "0.1", "max": "1.0", "step": "0.1"
+        },
+        "fre": {
+            "type":"slider", "data-field": "fre", "label":true,
+            "data-type":"float", "min": "1.5", "max": "8.0", "step": "0.1"
+        },
+        "speed": {
+            "type":"slider", "data-field": "speed", "label":true,
+            "data-type":"float", "min": "0.0", "max": "4.0", "step": "0.1"
+        },
+        "color": {
+            "type":"ddlist", "data-field": "color", "label":true,
+            "items": ["fire", "gas"],
+            "events": ["change"]
+        }
+    },
+    "settings": {
+        "width": "256",
+        "height": "128",
+        "amp0": 0.5,
+        "fre0": 2.0,
+        "amp": 0.5,
+        "fre": 2.0,
+        "speed": 0.6,
+        "color": "fire"
+    }
+}

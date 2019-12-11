@@ -1,0 +1,41 @@
+{
+    "template": {
+        "count": { 
+            "type":"textbox", "data-field": "count",
+            "data-type":"float", "min": "10", "max": "1000", "step": "10",
+            "events": ["change"]
+        },
+        "sun": {
+            "type":"slider", "data-field": "sun",
+            "data-type":"float", "min": "0.01", "max": "0.1", "step": "0.005",
+            "events": ["change"]
+        },
+        "force": {
+            "type":"textbox", "data-field": "force",
+            "data-type":"float", "min": "0.0", "max": "1.0", "step": "0.05"
+        },
+        "time": {
+            "type":"slider", "data-field": "time",
+            "data-type":"float", "min": "0.0", "max": "0.1", "step": "0.01",
+            "transform":"log",
+            "events": ["change"]
+        },
+        "maxEnergy": {
+            "type":"slider", "data-field": "maxEnergy",
+            "data-type":"float", "min": "1.0", "max": "5.0", "step": "0.1",
+            "events": ["change"]
+        },
+        "orbit": {
+            "type":"checkbox", "data-field": "orbit",
+            "events": ["change"]
+        }
+    },
+    "settings": {
+        "count": 200,
+        "sun": 0.02,
+        "force": 0.00982,
+        "time": 0.06,
+        "maxEnergy": 3.2,
+        "orbit": true
+    }
+}

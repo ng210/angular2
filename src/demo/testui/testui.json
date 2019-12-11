@@ -1,0 +1,57 @@
+{
+	"template": {
+		"persons": {
+			"type": "grid",
+			"data-field": "family",
+			"header": true,
+			"row-template": {
+				"name": {
+					"type":"textbox", "data-field":"name", "data-type":"string", "column": "$Key",
+					"events": ["change"]
+				},
+				"age": {
+					"type":"textbox", "data-field":"age", "data-type":"int", "column": "$Key",
+					"min": "1", "max": "100", "step": "1",
+					"events": ["change"]
+				},
+				"color": {
+					"type":"ddlist", "data-field":"color", "data-type":"string", "column": "$Key",
+					"items":false, "events": ["change"]
+				},
+				"health": {
+					"type":"slider", "data-field":"health", "data-type":"float", "column": "$Key",
+					"min": 0.0, "max": 1.0, "step": 0.1,
+					"events": ["change"]
+				},
+				"married": {
+					"type":"checkbox", "data-field":"married", "label": "$key", "column": "$Key",
+					"events": ["change"]
+				},
+				"accept": {
+					"type":"button", "data-field":"confirm", "label": "Accept values", "column": "$Key",
+					"events": ["click"]
+				}
+			}
+		},
+		"dials": {
+			"type": "grid",
+			"data-field": "dial",
+			"cols": 3,
+			"cell-template": {
+				"type":"textbox", "data-type":"string", "label": false,
+				"events": ["change"]
+			}
+		}
+	},
+	"settings": {
+		"family": {
+			"father": { "age": 40, "name": "Gabor", "color": "blue", "health": 0.7, "married": true, "confirm": "Ok" },
+			"mother": { "name": "Tilda", "color": "red", "health": 0.8, "married": true, "confirm": "Go" },
+			"child": { "age": 10, "name": "Gergely", "color": "green", "health": 0.9, "married": false, "confirm": "Da me!" }
+		},
+		"dial": [
+			["7","8","9"], ["4","5","6"], ["1","2","3"], ["#", "0", "*"]
+		]
+	},
+	"colors": ["red", "green", "blue", "black", "white"]
+}
