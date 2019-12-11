@@ -4,8 +4,8 @@
   "description": "Document root",
   "main": "index.js",
   "scripts": {
-    "debug": "node --inspect deploy/index.js",
-    "start": "node deploy/index.js"
+    "debug": "node --inspect index.js",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
