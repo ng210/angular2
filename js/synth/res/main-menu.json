@@ -1,0 +1,56 @@
+{
+    "titlebar": false,
+    "css": "main",
+    "layout": "horizontal",
+    "items": {
+        "file":     {
+            "titlebar": "File", "type":"menu",
+            "items": {
+                "new": {
+                    "type":"menu","titlebar": "New", "layout": "submenu",
+                    "items": {
+                        "device": {"type":"label","value": "Device..." },
+                        "sequence": {"type":"label","value": "Sequence..." },
+                        "block": {"type":"label","value": "Data block...", "disabled": true }
+                    }
+                },
+                "import": {"type":"label","value": "Import...", "disabled": true },
+                "export": {"type":"label","value": "Export...", "disabled": true },
+                "settings": {"type":"label","value": "Settings..." }
+            }
+        },
+        "edit": {
+            "titlebar": "Edit", "type":"menu", "disabled": true,
+            "items": {
+                "undo": {"type":"label","value": "Undo" },
+                "redo": {"type":"label","value": "Redo" },
+                "cut": {"type":"label","value": "Cut" },
+                "copy": {"type":"label","value": "Copy" },
+                "paste": {"type":"label","value": "Paste" },
+                "delete": {"type":"label","value": "Delete" }
+            }
+        },
+        "play":   {
+            "titlebar": "Play","type":"menu", "disabled": true,
+            "items": {
+                "start": {"type":"label", "value": "Start" },
+                "stop": {"type":"label", "value": "Stop" }
+            }
+        },
+        "view":  {
+            "titlebar": "View","type":"menu", "disabled": true,
+            "items": {
+                "devices": {"type":"label","value": "Devices" },
+                "sequences": {"type":"label","value": "Sequences" },
+                "dataBlocks": {"type":"label","value": "Data Blocks" }
+            }
+        },
+        "help": {
+            "titlebar": "Help", "type":"menu",
+            "items": {
+                "usage": {"type":"label","value": "Usage", "disabled": true },
+                "about": {"type":"label","value": "About" }
+            }
+        }
+    }
+}

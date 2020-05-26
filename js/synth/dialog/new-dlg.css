@@ -1,0 +1,67 @@
+dialog.new {
+    width: fit-content;
+    font-family: Consolas;
+    overflow: hidden;
+    font-size: 12pt;
+}
+
+.dialog.new {
+    box-sizing: border-box;
+}
+
+.dialog.new.content {
+    height: fit-content;
+    padding: 0.5em;
+    min-height: 4em;
+    overflow: auto;
+}
+
+.dialog.new.details {
+    font-style: normal;
+}
+
+.dialog.new.details.content  {
+    flex-grow: 1;
+    margin-top: 1em;
+    border: #406080 2px inset;
+    padding: 0.5em;
+    width: 20em; height: fit-content;
+    min-height: 4em;
+}
+select.dialog.new.adapter {
+    width: 10em;
+}
+
+.dialog.new.label {
+    padding-right: 0.4em;
+    white-space: nowrap;
+}
+
+.dialog.new.buttons.content {
+    width: 100%; height: fit-content;
+    margin: 0.25em; padding: 0.25em;
+    box-sizing: border-box;
+    justify-content: center;
+}
+
+.dialog.new.button {
+    font-size: 10pt; font-weight: bold;
+    margin: 0.25em; padding: 0.25em;
+    width: fit-content; height: 2.5em;
+    cursor: pointer;
+    border-width: 2px;
+}
+
+.dialog.new.details.type,
+.dialog.new.details.voices,
+.dialog.new.details.id  {
+    height: 1.5em;
+}
+
+select.dialog.new.details.type {
+    margin-right: 2em;
+}
+
+pot.dialog.new.details.voices {
+    cursor: ns-resize
+}

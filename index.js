@@ -4,8 +4,11 @@ const path = require('path');
 const app = express();
 app.use(express.json());
 const port = process.env.PORT || 3000;
+var tokens = process.argv[1].split(path.sep);
+tokens.pop(); tokens.pop();
+const documentPath = process.argv[2] || tokens.join(path.sep);
+console.log(`documentPath=${documentPath}`);
 
-const documentPath = __dirname + path.sep + 'src';
 app.get('/*', function(req, resp) {
     var resPath = path.normalize(path.join(documentPath, req.path));
     var exists = fs.existsSync(resPath);

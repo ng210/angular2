@@ -1,0 +1,23 @@
+
+body {
+	background-color: black;
+	color: green;
+	margin: 0px; padding: 0px;
+	border: 0 none;
+	overflow: hidden;
+}
+
+div.wrapper {
+	border: groove 2px silver;
+}
+
+#con {
+	position: relative;
+	font-size: 12pt; font-family: Consolas;	text-align: left;
+	padding: 2 8; margin: 0;
+	background-color:#102030; color:#208040;
+	opacity: 0.5;
+	overflow: hidden auto;
+	width: 96vw; height: 96vh;
+ 	visibility: hidden;
+}

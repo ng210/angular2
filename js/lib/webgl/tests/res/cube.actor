@@ -1,0 +1,12 @@
+{
+    "id": actor,
+    "components":
+    {
+        "main":
+        {
+            "mesh": "cube",
+            "transform": null,
+            "material": "wood"
+        }
+    }
+}

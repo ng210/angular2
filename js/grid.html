@@ -1,0 +1,129 @@
+<html>
+    <head>
+        <style type="text/css">
+        </style>
+        <script>
+
+function step(edge, x) {
+    return x < edge  ? 0 : 1;
+}
+
+function length(x, y) {
+    return Math.sqrt(x*x + y*y);
+}
+
+function mod(x, n) {
+    return x % n;
+}
+
+var size = {width:8, height:6};
+var unit = {x:10, y:10};
+var offset = {x:0, y:0};
+var range = [];
+var maxX = 0;
+var minX = 0;
+
+var data = [ [0, 1], [2, 1], [3, 2], [5, 4], [6, 5], [8, 7], [9, 8], [10, 8], [11, 9]];
+var cvs = null;
+var ctx = null;
+var timer = null;
+
+// ctrl #######################################################################
+function scroll(x,y) {
+    offset.x += x;
+    offset.y += y;
+}
+
+function move(x, y) {
+    offset.x = x;
+    offset.y = y;
+}
+
+function updateRange(start, length) {
+    range = [];
+    var end = start + length;
+    if (start > maxX) return;
+    if (end < minX) return;
+
+    for (var i=0; i<data.length; i++) {
+        if (data[i][0] >= end) break;
+        if (data[i][0] >= start) range.push(data[i]);
+    }
+    console.log(range.map(r => `${r[0]},${r[1]}`).join('; '));
+}
+
+// gfx ########################################################################
+function hasPoint(x, y) {
+    var points = [];
+    var ux = Math.floor(x/unit.x);
+    var uy = Math.floor(y/unit.y);
+    for (var i=0; i<range.length; i++) {
+        var point = range[i];
+        if (point[0] > ux) break;
+        var dx = Math.abs(point[0] - ux);
+        var dy = Math.abs(point[1] - uy);
+        if (step(1, dx) + step(1, dy) == 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function getColor(x,y) {
+    var color = '#000000';
+    var world = {x:x + offset.x, y:y + offset.y};
+    if (world.x >= 0 && world.x <= maxX*unit.x) {
+        color = '#102040';
+        if (hasPoint(world.x, world.y)) color = '#c08040';
+        else {
+            // grid
+            var grid = {};
+            grid.x = mod(world.x, unit.x);
+            grid.y = mod(world.y, unit.y);
+            if (grid.x*grid.y == 0) color ='#204080';
+            if (mod(world.x, unit.x*4) == 0) color ='#3080c0';
+        }
+    }
+    return color;
+}
+
+// misc #######################################################################
+var angle = 0;
+function render() {
+    clearTimeout(timer);
+    if (angle < 2*Math.PI) {
+        var cx = Math.floor(unit.x*size.width*(0.0 + 0.25*Math.cos(angle)));
+        var cy = Math.floor(unit.y*size.height*(0.0 + 0.25*Math.sin(angle)));
+        //scroll(cx, cy);
+        move(cx, cy);
+        //scroll(0.2*unit.x, 0);
+        var start = Math.floor(offset.x/unit.x) - 1;
+        updateRange(start, size.width + 2);
+        for (var y=0; y<cvs.height; y++) {
+            for (var x=0; x<cvs.width; x++) {
+                ctx.fillStyle = getColor(x, y);
+                ctx.fillRect(x, y, 1, 1);
+            }
+        }
+        angle += 0.1;
+        timer = setTimeout(render, 50);
+    }
+}
+
+function main() {
+    cvs = document.getElementById('cvs');
+    cvs.width = size.width * unit.x;
+    cvs.height = size.height * unit.y;
+    ctx = cvs.getContext('2d');
+
+    maxX = data[data.length-1][0] + 1;
+    minX = data[0][0] - 1;
+
+    render();
+}
+        </script>
+    </head>
+    <body onload="main()">
+        <canvas id="cvs"></canvas>
+    </body>
+</html>

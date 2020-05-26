@@ -1,0 +1,9 @@
+body {
+    background-color: #182630;
+}
+
+#Synth1 {
+    margin: 1em 2em;
+    border: #000000 4px solid;
+    width:488px; height:160px;
+}

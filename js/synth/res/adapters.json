@@ -1,0 +1,4 @@
+{
+    "player": "/ge/player/player.js",
+    "synth": "/synth/synth-adapter.js"
+}

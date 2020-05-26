@@ -1,0 +1,3 @@
+{
+    "title": { "type":"label", "data-field":"title", "data-type":"string" }
+}

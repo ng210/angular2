@@ -1,0 +1,51 @@
+<html>
+    <head>
+        <script src="lib/base/base.js"></script>
+        <script>
+include('/synth/synth.js');
+var _audioContext = null
+var _audioWorklet = null;
+var _timer = null;
+var _smpRate = 48000;
+var _pitch = 55;
+var _pitchElement = null;
+var _f2r = Math.pow(2, 4/12);
+
+var _note = 24;
+var _phase = 0;
+
+async function init() {
+    _audioContext = new AudioContext()
+    await _audioContext.audioWorklet.addModule('synth/synth.js');
+    //await _audioContext.audioWorklet.addModule('audio-worklet.js');
+    _audioWorklet = new AudioWorkletNode(_audioContext, 'audio-processor', { outputChannelCount: [2] });
+    _audioWorklet.port.postMessage({code:'init'});
+    _pitchElement = document.getElementById('pitch');
+    //playNote();
+    // _audioWorklet.connect(_audioContext.destination);
+}
+
+function playNote() {
+    clearTimeout(_timer);
+
+    _audioWorklet.port.postMessage({code:'setNote', note: _note, velocity: _phase ? 1.0 : 0.0 });
+    _phase = 1 - _phase;
+    _timer = setTimeout(playNote, 250);
+}
+
+// function changePitch() {
+//     clearTimeout(_timer);
+//     _pitchElement.innerHTML = _pitch.toPrecision(6);
+//     _audioWorklet.port.postMessage({code:'set', pitch: _pitch});
+//     if (_pitch > 220)
+//         _pitch = 55;
+//     else
+//         _pitch *= _f2r;
+//     _timer = setTimeout(changePitch, 80);
+// }
+        </script>
+    </head>
+    <body onload="init()">
+        <span id="pitch" style="font-size: 14pt"></span>
+    </body>
+</html>

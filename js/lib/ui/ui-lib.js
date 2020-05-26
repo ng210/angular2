@@ -1,0 +1,14 @@
+include('datalink.js')
+include('label.js');
+include('textbox.js');
+include('slider.js');
+include('ddlist.js');
+include('checkbox.js');
+include('button.js');
+include('board.js');
+include('panel.js');
+include('grid.js');
+include('select.js');
+include('menu.js');
+include('pot.js');
+include('dialog.js');

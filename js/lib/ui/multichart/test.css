@@ -1,0 +1,43 @@
+.titlebar {
+    color: #000000;
+    font-family: Verdana;
+    font-size: 11pt;
+    padding: 2px;
+    background-color: #6070a0;
+    border: solid 2px #405080
+}
+
+#test1 {
+    position:absolute;
+    left: 0px;
+}
+
+#test2 {
+    position:absolute;
+    left: 360px;
+}
+
+#test3 {
+    position:absolute;
+    left: 700px;
+}
+
+#test4 {
+    position:absolute;
+    left: 1040px;
+}
+
+#test5 {
+    position:absolute;
+    left: 1380px;
+}
+
+#test6 {
+    position:absolute;
+    left: 1720px;
+}
+
+#test7 {
+    position:absolute;
+    left: 2060px;
+}

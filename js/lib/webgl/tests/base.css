@@ -1,0 +1,35 @@
+body {
+	margin: 0px;
+	background-color:black;
+	font-family:Arial;
+	font-size:10pt;
+}
+#cvs-container {
+	position:absolute;
+}
+
+#cvs {
+	background-color:black
+}
+
+#con {
+	position:absolute;
+	font-size:10pt;
+	font-family:Consolas;
+	text-align:left;
+	padding:2 4;
+
+	box-sizing: border-box;
+	margin:0;
+	background-color:#102030;
+	color:#208040;
+	opacity:0.5;
+	height:25vh; width:100vw;
+	overflow:hidden auto
+}
+
+#menu {
+	background-color:silver;
+	position:absolute;
+	overflow:hidden auto
+}

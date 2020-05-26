@@ -1,0 +1,214 @@
+<html>
+    <head>
+        <style>
+#board {
+    position:absolute;
+    font-size:12pt;
+    font-family: Consolas;
+    height: 20em; width:16em;
+    border: #80a0e0 2px solid;
+    background-color: #c0e0f0;
+}
+.panel {
+    flex-direction: column;
+    display: flex;
+}
+.panel.content {
+    flex-direction: row;
+    display: flex;
+    height: 100%;
+    overflow: auto;
+}
+.panel.content.left {
+    border: #80e0a0 2px solid;
+    background-color: #c0f0e0;
+    height: auto;
+    width:50%;
+}
+.panel.content.handler {
+    display:block;
+    border: none;
+    background-color: #606080;
+    width: 4px;
+    cursor:col-resize;
+}
+.panel.content.right {
+    border: #80a0e0 2px solid;
+    background-color: #c0e0f0;
+    height: auto;
+    width:50%;
+    flex-direction: column;
+    display: flex;
+}
+
+.panel.content.right.titlebar {
+    overflow: hidden;
+    color: #405070;
+    width: auto;
+    border:none;
+}
+
+.panel.content.right.handler {
+    display:block;
+    border: none;
+    background-color: #606080;
+    height: 4px;
+    width: auto;
+    cursor: row-resize;
+}
+
+.panel.content.right.top {
+    border: #e0c0a0 2px solid;
+    background-color: #f0e0c0;
+    height: 50%;
+    width: auto;
+
+}
+
+.panel.content.right.bottom {
+    border: #c0a0e0 2px solid;
+    background-color: #e0c0f0;
+    height: 50%;
+    width: auto;
+}
+
+
+.panel.titlebar {
+    font-weight: bold;
+    background-color: #405070;
+    color: #c0e0f0;
+    padding: 2px 4px;
+}
+        </style>
+        </style>
+        <script src="/src/base/base.js"></script>
+        <script>
+            window.onload = onpageload;
+
+var cons = null;
+function out(text) {
+    cons.innerHTML += text +'<br/>'
+}
+
+var counter = 0;
+var counter2 = 0;
+var result = 0.0;
+
+function calculate() {
+    var n = 100;
+    for (var i=0; i<n; i++) {
+        result += Math.pow(result, i/n);
+        out(result.toFixed(8));
+    }
+}
+
+function eventHandler(e) {
+    out('event: ' + e.type);
+    //e.preventDefault();
+}
+
+function test_mousedown() {
+    document.addEventListener('mousedown', eventHandler, false);
+    var btn = new Ui.Button('Hello', {events:['mousedown'], value:'Ok'});
+    btn.onmousedown = function(ctrl, e) { out('Btn: Ok!'); return true; };
+    btn.render({element:document.getElementById('btn1')});
+}
+
+async function test_load() {
+    out(await load({url:'grid.html'}));
+    var res = await load({url:'demo/data/aliens.gif'});
+    out(res);
+    document.body.appendChild(res.node);
+
+    out(await load('base/test/mdl0.js'));
+    out(await load('synth/test.js'));
+}
+
+async function test_poll(){
+    await poll( () => { out(counter); if (counter < 10) { counter++; return false;} return true; });
+    out('---');
+}
+
+function test_lock() {
+    counter = 0;
+    poll( () => { out('#1:' + counter); if (counter <  5) { counter+=1; return false;} return true; }, 100);
+    poll( () => { out('#2:' + counter); if (counter < 10) { counter+=2; return false;} return true; }, 200);
+    poll( () => { out('#3:' + counter); if (counter < 15) { counter+=3; return false;} return true; }, 1000);
+    poll( () => { out('#4:' + counter); if (counter < 20) { counter+=4; return false;} return true; });
+
+    out('--------');
+    counter2 = 0;
+    lock('counter2', () => poll( () => { out('#5:' + counter); if (counter <  5) { counter+=1; return false;} return true; }, 100));
+    lock('counter2', () => poll( () => { out('#6:' + counter); if (counter < 10) { counter+=2; return false;} return true; }, 200));
+    lock('counter2', () => poll( () => { out('#7:' + counter); if (counter < 15) { counter+=3; return false;} return true; }, 1000));
+    lock('counter2', () => poll( () => { out('#8:' + counter); if (counter < 20) { counter+=4; return false;} return true; }));
+}
+
+function test_panel() {
+    var board = new Ui.Board('board', {
+        titlebar: 'Panel',
+        css: 'panel',
+        items: {
+            'content': {
+                type: 'board',
+                titlebar: false,
+                css: 'content',
+                items: {
+                    left: { type:'label', css:'left', value: 'LEFT' },
+                    handler: { type:'label', css:'handler', value: '', events:['dragging'] },
+                    right: {
+                        type:'board',
+                        titlebar: 'Right',
+                        css:'right',
+                        items: {
+                            top: { type:'label', css:'top', value: 'TOP' },
+                            handler: { type:'label', css:'handler', value: '', events:['dragging'] },
+                            bottom: { type:'label', css:'bottom', value: 'BOTTOM' },
+                        }
+                    }
+                }
+            }
+        }
+    });
+    board.items.content.items.handler.ondragging = function(e) {
+        var left = e.control.element.previousSibling;
+        var right = e.control.element.nextSibling;
+        e.control.element.style.left = e.clientX + 'px';
+        var wl = e.clientX - e.control.element.offsetWidth;
+        var wr = right.parentNode.clientWidth - wl - e.control.element.offsetWidth;
+        left.style.width = wl + 'px';
+        right.style.width = wr + 'px';
+    };
+    board.items.content.items.right.items.handler.ondragging = function(e) {
+        var top = e.control.element.previousSibling;
+        var bottom = e.control.element.nextSibling;
+        e.control.element.style.top = e.clientY + 'px';
+        var hl = e.clientY - e.control.element.offsetHeight;
+        var hr = bottom.parentNode.clientHeight - hl - e.control.element.offsetHeight;
+        top.style.height = hl + 'px';
+        bottom.style.height = hr + 'px';
+    };
+    board.render({element:document.body});
+}
+
+async function onpageload() {
+    await include('/lib/ui/ui-lib.js');
+    cons = document.getElementById('cons');
+
+    // test_mousedown();
+    // await test_load();
+    // await test_poll();
+    // test_lock();
+    test_panel();
+
+    out('Tests');
+}
+
+        </script>
+    </head>
+    <body>
+        <btn id="btn1"></btn>
+        <button onclick="out('HELLO');">Hello</button>
+        <code id="cons"></code>
+    </body>
+</html>

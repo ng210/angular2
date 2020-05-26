@@ -1,0 +1,40 @@
+dialog.about {
+    width: 14em; height: 8em;
+    font-family: Consolas;
+}
+
+.dialog.about {
+    box-sizing: border-box;
+}
+
+.dialog.about.content {
+    height: 5em;
+}
+
+.dialog.about.icon {
+    width: 64px; height: 64px;
+    background-image: url('res/about.png');
+    margin: 2px;
+    border: black 1px solid;
+}
+
+.dialog.about.text {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12pt; font-style: italic;
+    flex-grow: 1;
+    padding: 4px;
+}
+
+.dialog.about.buttons.content {
+    width: 100%; height: 3em;
+    padding: 0em;
+    box-sizing: border-box;
+    justify-content: center;
+}
+
+.dialog.about.button {
+    margin: 0.5em;
+    font-size: 12pt; font-weight: bold;
+    width: 3em; height: 1.5em;
+    cursor: pointer;
+}

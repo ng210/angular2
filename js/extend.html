@@ -1,0 +1,100 @@
+<html>
+  <head>
+      <style>
+          body {
+              background-color: #202428;
+              margin: 2em;
+              font-family: Verdana;
+              font-size: 10pt;
+          }
+          #con {
+              width: 40em; height:25em;
+              background-color: #303840;
+              color: #5070a0;
+              border: groove 2px #606c78;
+              padding: 1em;
+          }
+      </style>
+      <script type="text/javascript">
+
+function out(txt) {
+    _con.innerHTML += txt.replace(/\n/g, '<br/>');
+}
+
+
+/*****************************************************************************/
+function extend(b, e) {
+    var _e = e;
+    e = window[_e.name] = function() {
+        _e.apply(this, arguments);
+        b.apply(this, arguments);
+    }
+    e.prototype = Reflect.construct(b, []);
+    e.prototype.constructor = e;
+    e.base = b.prototype;
+}
+
+Object.prototype.invoke = function(func) {
+    var args = [];
+    for (var i=1; i<arguments.length; i++) {
+        args.push(arguments[i]);
+    }
+    return func.apply(this, args);
+}
+
+/*****************************************************************************/
+function A(a) {
+    this.a = a;
+}
+extend(Object, A);
+
+A.prototype.d = function() {
+    return this.a * this.a;
+};
+
+/*****************************************************************************/
+function B(a, b) {
+    this.b = b;
+}
+extend(A, B);
+
+B.prototype.d = function() {
+    return this.invoke(B.base.d) + this.b * this.a;
+};
+
+/*****************************************************************************/
+function C(a, b, c) {
+    this.c = c;
+}
+extend(B, C);
+
+C.prototype.d = function() {
+    return this.invoke(C.base.d) + this.c;
+};
+
+/*****************************************************************************/
+function main() {
+    out('<i>€XT€ND 1MPL€M€NT4T10N 4ND T€5T</i>\n\n');
+    var a = new A(2);
+    var b = new B(2, 3);
+    var c = new C(2, 3, 4);
+    out(`a.d=${a.d()}\n`);
+    out(`a=${JSON.stringify(a)}\n`);
+    out(`b.d=${b.d()}\n`);
+    out(`b=${JSON.stringify(b)}\n`);
+    out(`c.d=${c.d()}\n`);
+    out(`c=${JSON.stringify(c)}\n`);
+}
+
+/*****************************************************************************/
+var _con = null;
+window.onload = e => {
+    _con = document.getElementById('con');
+    main();
+};
+      </script>
+  </head>
+  <body>
+      <div id="con"></div>
+  </body>
+</html>

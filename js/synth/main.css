@@ -1,0 +1,312 @@
+body {
+    background-color: #000000;
+    padding: 0em;
+    margin: 0em;
+    overflow: hidden;
+}
+
+#overlay {
+    position: absolute; left: 0px; top: 0px;
+    width: 100vw; height: 100vw;
+    background-color: black;
+    opacity: 0.6;
+    z-index: 200;
+}
+
+#app {
+    padding: 6pt; margin: 8pt;
+    background-color: #406080;
+    font-family: Verdana;
+    width: 95vw; height: 75vh;
+    box-sizing: border-box;
+    border: #80c0ff 3px ridge;
+}
+
+#app > .content {
+    height: 100%;
+}
+
+#mainMenu {
+    position: relative;
+    left: 0px; top: 0px;
+    background-image: url('res/menu-blue.png');
+    height: 1.6em;
+    margin: 0 0 6pt 0;
+}
+
+#app_ui {
+    position: relative;
+    display: block;
+    width: 100%; height: 100%;
+}
+
+#app_ui_content {
+    width: 100%; height: 100%;
+}
+
+#app_ui_content > .main.ui.panel {
+    border: #6090c0 2px inset;
+    background-color: #203040;    
+}
+
+#app_ui_devices {
+    /* position:relative; */
+    width: 512px;
+    margin-right: 6pt;
+    /* height: 40em; */
+    border: black 1px solid;
+    overflow: auto;
+}
+
+#app_ui_tracks {
+    overflow: auto;
+}
+
+#con {
+    position:relative;
+    width:100%; height: 24vh;
+    font-size:10pt;
+	font-family:Consolas;
+	text-align:left;
+	padding: 1em;
+	margin:0;
+	box-sizing: border-box;
+	background-color:#102030;
+	color:#208040;
+    opacity:0.5;
+	overflow:hidden auto
+}
+
+#controls {
+    margin:1em 0em; padding: 0px;
+    height: 1.4em;
+}
+
+.pot.bpm.label {
+    color: #80c0ff
+}
+
+.disabled {
+    opacity: 0.90;
+    color: #30485a;
+}
+
+/**** MAIN MENU **************/
+menu.main {
+    width: 20em;
+    height: fit-content;
+    display: block;
+    cursor: pointer;
+    padding: 0px;
+    margin: 0px;
+    font-size: 12pt; font-family: Verdana; font-weight: bold;
+    text-shadow: 2px 1px #406080;
+    z-index: 100;
+}
+
+.main.menu.titlebar:hover,
+.main.menu.submenu1.menuitem:hover,
+.main.menu.submenu1.titlebar:hover,
+.main.menu.submenu1.submenu2.menuitem:hover,
+.main.menu.submenu1.submenu2.titlebar:hover {
+    background-color: #80c0ff;
+    text-shadow: 1px 1px #406080;
+    /*font-size: 14pt;
+    border: #80c0ff 2px outset; */
+}
+
+.main.menu.submenu1.titlebar.open,
+.main.menu.submenu1.submenu2.titlebar.open {
+    /* color: #fff0c0; */
+    background-color: #80c0ff;
+}
+
+/* level 1 */
+menu.main.menu.submenu1 {
+    width: 4em;
+    /* background-color: #8080e0; */
+    height: 1.4em;
+}
+.main.menu.submenu1.titlebar,
+.main.menu.submenu1.submenu2.titlebar {
+    /* width: 6em; */
+    box-sizing: border-box;
+    background-color: #6090c0;
+    border: #80c0ff 2px outset;
+    text-align: center;
+    padding: 1px;
+}
+/* .main.menu.submenu1.content {
+    background-color: #808080;
+} */
+.main.menu.submenu1.menuitem {
+    width: 7em;
+    background-color: #6090c0;
+    padding-left: 1em;
+    min-height: 1.4em;
+}
+
+/* LEVEL #1 */
+menu.main.menu.submenu1.submenu2 {
+    width: 16em;
+    /* height: 1.2em; */
+}
+menu.main.menu.submenu1.submenu2:hover {
+    width: 16em;
+    /* height: 1.2em; */
+}
+
+/* LEVEL #2 */
+.main.menu.submenu1.submenu2.titlebar {
+    width: 8em;
+    text-align: left;
+    border: none;
+    padding-left: 1em;
+}
+/* .main.menu.submenu1.submenu2.content {
+    border: #80c0ff 2px outset;
+} */
+.main.menu.submenu1.submenu2.menuitem {
+    width: 7em;
+    background-color: #6090c0;
+    /* min-height: 1.4em; */
+}
+
+@keyframes menu-xfade-in {
+    0% { opacity: 0.0; }
+  100% { opacity: 1.0; }
+}
+
+@keyframes menu-xfade-out {
+    0% { opacity: 1.0; }
+  100% { opacity: 0.0; }
+}
+
+.xfade-in {
+    animation: menu-xfade-in 0.1s linear 0s 1 forwards;
+    height: fit-content;
+}
+
+.xfade-out {
+    animation: menu-xfade-out 0.1s linear 0s 1 forwards;
+    height: fit-content;
+}
+
+.xfade-closed {
+    height: 0em; overflow: hidden;
+}
+
+/**** DIALOG *****************/
+dialog {
+    box-sizing: border-box;
+    background-color: #6090c0;
+    border: #80c0ff 2px groove;
+    padding: 1px;
+    z-index: 500;
+}
+.dialog.titlebar {
+    background-color: #406080;
+    color: #80c0ff;
+    border: none;
+}
+.dialog.content {
+    width: 100%;
+    height: 100%;
+}
+
+.dialog.grid.r0 {
+    background-color: #406080;
+}
+
+.dialog.grid.r1 {
+    background-color: #80c0ff;
+}
+
+pot.dialog {
+    background-color: #406080;
+    border: #6090c0 2px inset;
+    color: #80c0ff;
+    cursor: ns-resize;
+}
+
+/**** UI *********************/
+/*.mainPanel.panel.content {
+    height: 100%;
+}*/
+
+.main.ui.panel.sequences.content {
+    overflow: auto;
+}
+
+.main.ui.panel.sequences.toolbar {
+    height: 2em;
+}
+
+div.main.ui.panel.sequences {
+    height: 100%;
+}
+
+synth {
+    margin-bottom: 1em;
+    border: black 2px solid;
+    z-index: 50;
+}
+
+.synth.selected {
+    border-color: #4060f0;
+}
+
+.synth.titlebar.selected {
+    background-color: #90a0e0;
+    color: black;
+}
+
+.synth01 {
+    background-color: #c0a0b0;
+}
+
+.synth01.toolbar {
+    background-color: #e0c0d0;
+}
+
+.synth02 {
+    background-color: #a0b0c0;
+}
+.synth02.toolbar {
+    background-color: #c0d0e0;
+}
+
+.synth03 {
+    background-color: #a0c0b0;
+}
+.synth03.toolbar {
+    background-color: #c0e0d0;
+}
+
+
+.content.editors.panel {
+    border: none;
+}
+
+div.pattern {
+    box-sizing: border-box;
+    /*display: inline-block;
+    /* width: 640px;
+    height: 360px; */
+}
+
+canvas {
+    background-color: #000810
+}
+
+#pattern1_chart {
+    position: relative;
+    box-sizing: border-box;
+    display: inline-block;
+}
+
+button {
+    padding:0px;
+    font-size: 10pt;
+    font-family: Consolas;
+}

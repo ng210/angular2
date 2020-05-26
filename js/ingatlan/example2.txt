@@ -1,0 +1,113 @@
+Formula of numbers and 3 operators.
+Symbols
+    A: operator+
+    M: operator*
+    P: operator^
+    L: literal
+
+    A1: operator+ with left operand
+    M1: operator* with left operand
+    P1: operator^ with left operand
+
+    AM: operator+ with left operand and right operator*
+    AP: operator+ with left operand and right operator^
+    MP: operator* with left operand and right operator^
+    
+Rules
+    r1: (L, A)      => { A.left = L; A.type = A1; return A; }                   // 1+
+    r2: (A1, L, P)  => { P.left = L; A1.right = P; P.type = P1; return P; }     // 1+2^
+    r3: (A1, L, M)  => { M.left = L; A1.right = M; M.type = M1; return M; }     // 1+2*
+    r4: (A1, L)     => { A1.right = L; A1.do(); A1.type = L; return A1; }       // 1+2
+
+    r5: (L, M)      => { M.left = L; M.type = M1; return M; }                   // 1*
+    r6: (M1, L, P)  => { P.left = L; M1.right = P; P.type = P1; return P; }     // 1*2^
+    r7: (M1, L)     => { M.right = L; M1.do(); M1.type = L; return M1; }        // 1*2
+
+    r8: (L, P)      => { P.left = L; P.type = P1; return P; }                   // 1^
+    r9: (P1, L)     => { P1.right = L; P1.do(); P1.type = L; return P1; }       // 1^2
+    
+    r10:(F, B1)     => { stack.push(F); return null; }                          // sin
+    r11:(A1, F, B1) => { A1.right = F; stack.push(F); return null; }            // 1+sin(
+    r12:(M1, F, B1) => { M1.right = F; stack.push(F); return null; }            // 1*sin(
+    r13:(P1, F, B1) => { P1.right = F; stack.push(F); return null; }            // 1^sin(
+    r14:(L, B2)     => { F = stack.pop(); F.arguments.push(L); F.do();          // 3)
+                         F.type = L; return F; }
+    r15:(L, C)      => { F = stack.top(); F.arguments.push(L); return null; }   // 2,
+
+
+Example a,
+    Input: 1+2
+    - formalization => [ L(1), A, L(2) ]
+    - resolution: r1, r4
+Example b,
+    Input: 1*2
+    - formalization => [ L(1), M, L(2) ]
+    - resolution: r5, r7
+Example c,
+    Input: 1+2+3
+    - formalization => [ L(1), A, L(2), A, L(3) ]
+    - resolution: r1, r4, r1, r4
+Example d,
+    Input: 1*2*3
+    - formalization => [ L(1), M, L(2), M, L(3) ]
+    - resolution: r5, r7, r5, r7
+Example e,
+    Input: 1+2*3
+    - formalization => [ L(1), A, L(2), M, L(3) ]
+    - resolution: r1, r3, r7
+Example f,
+    Input: 1*2+3
+    - formalization => [ L(1), M, L(2), A, L(3) ]
+    - resolution: r5, r7, r1, r4
+Example g,
+    Input: 1^2
+    - formalization => [ L(1), P, L(2) ]
+    - resolution: r8, r9
+Example h,
+    Input: 1^2^3
+    - formalization => [ L(1), P, L(2), P, L(3) ]
+    - resolution: r8, r9, r8, r9
+Example i,
+    Input: 1+2^3
+    - formalization => [ L(1), A, L(2), P, L(3) ]
+    - resolution: r1, r2, r9
+Example j,
+    Input: 1^2+3
+    - formalization => [ L(1), P, L(2), A, L(3) ]
+    - resolution: r8, r9, r1, r4
+Example k,
+    Input: 1*2^3
+    - formalization => [ L(1), M, L(2), P, L(3) ]
+    - resolution: r5, r6, r9
+Example l,
+    Input: 1^2*3
+    - formalization => [ L(1), P, L(2), M, L(3) ]
+    - resolution: r8, r9, r5, r7
+Example m,
+    Input: 1+2*3^4
+    - formalization => [ L(1), A, L(2), M, L(3), P, L(4) ]
+    - resolution: r1, r3, r6, r9
+Example n,
+    Input: 1+2^3*4
+    - formalization => [ L(1), A, L(2), P, L(3), M, L(4) ]
+    - resolution: r1, r2, r9, r5, r7
+Example o,
+    Input: 1*2+3^4
+    - formalization => [ L(1), M, L(2), A, L(3), P, L(4) ]
+    - resolution: r5, r7, r1, r2, r9
+Example p,
+    Input: 1*2^3+4   
+    - formalization => [ L(1), M, L(2), P, L(3), A, L(4) ]
+    - resolution: r5, r6, r9, r1, r4
+Example q,
+    Input: sin(1)
+    - formalization => [ F(sin), B1, L(1), B2 ]
+    - resolution: r10, r14
+Example r,
+    Input: 1+sin(2)*3
+    - formalization => [ L(1), A, F(sin), B1, L(2), B2, M, (3) ]
+    - resolution: r1, r11, r14, r5, r7
+Example s,
+    Input: 1+pow(2,3)*pow(4,5+6*cos(7))
+    - formalization => [ L(1), A, F(pow), B1, L(2), C, L(3), B2, M, F(pow), B1, L(4), C, L(5), A, F(cos), B1, L(7), B2, B2 ]
+    - resolution: r1, r11, r15, r14, r5, r12, r15, r1, r11, r14, r14

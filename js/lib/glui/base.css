@@ -1,0 +1,39 @@
+body {
+	margin: 0px;
+	background-color:black;
+	font-family:Arial;
+	font-size:10pt;
+}
+
+#content {
+	position: absolute;
+	left: 0px; top: 0px; z-index: 100;
+	width: 100vw;
+}
+
+h1 {
+	text-align: center;
+	color: #80a0ff;
+}
+
+#cvs {
+	position: absolute;
+	left: 0px; top: 0px; z-index: 0;
+	background-color:black
+}
+
+#con {
+	position:absolute;
+	font-size:10pt;
+	font-family:Consolas;
+	text-align:left;
+	padding:2 4;
+
+	box-sizing: border-box;
+	margin:0;
+	background-color:#102030;
+	color:#208040;
+	opacity:0.5;
+	height:25vh; width:100vw;
+	overflow:hidden auto
+}

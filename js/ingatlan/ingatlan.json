@@ -1,0 +1,21 @@
+{
+    "titlebar": "Ingatlanok",
+	"items": {
+        "input": {
+            "type":"textbox", "data-field": "input", "label":"Keresés",
+            "events": ["change"]
+        },
+        "search": {
+            "type":"button", "events": ["click"], "value":"search"
+        },
+        "results": {
+            "type":"grid", "data-field": "results", "label":false, "header": true,
+			"row-template": {
+				"location": { "type":"label", "data-field":"location", "data-type":"string", "column": "$Key" },
+				"price": { "type":"label", "data-field":"price", "data-type":"int", "column": "$Key" },
+				"house": { "type":"label", "data-field":"houseSize", "data-type":"string", "column": "$key" },
+				"lot": { "type":"label", "data-field":"lotSize", "data-type":"float", "column": "$key" }
+			}
+        }
+   }
+}

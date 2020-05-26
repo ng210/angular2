@@ -1,0 +1,65 @@
+.test {
+    position: relative;
+    color: #40a060;
+    font-family: Verdana;
+    font-size: 12pt;
+    padding: 2px;
+    width: 6em;
+}
+
+div.test {
+    background-color: #402030;
+    border: solid 2px #804060;
+}
+
+button.test {
+    border-width: 3px;
+}
+
+span.test {
+    margin-top: 1em;
+    background-color: #e080c0;
+    border: solid 1px #e080c0;
+    color: #20080c
+}
+
+#TestPanel {
+    position: absolute;
+    left: 320px;
+    top: 240px;
+}
+
+.panel.right {
+    border: none;
+}
+
+.panel {
+    background-color: #200040;
+    border: #401060 2px solid;
+    color: #808080;
+}
+
+.panel.titlebar {
+    color: #a080ff;
+    font-weight: bold;
+    font-family: Consolas;
+    font-size: 14pt;
+}
+
+.panel.content {
+    border: silver 0px solid;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.panel.handler {
+    display: block;
+    border: none;
+    background-color: #e0e0e0;
+}
+
+#TestPanel {
+    position: absolute;
+    border: #ffffff 1px solid;
+    width: 320px; height: 256px;
+}

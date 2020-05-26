@@ -1,0 +1,102 @@
+<html>
+  <head>
+      <style>
+          body {
+              background-color: #202428;
+              margin: 2em;
+              font-family: Verdana;
+              font-size: 10pt;
+          }
+          #con {
+              width: 40em; height:25em;
+              background-color: #303840;
+              color: #5070a0;
+              border: groove 2px #606c78;
+              padding: 1em;
+          }
+      </style>
+      <script type="text/javascript" src="lib/base/base.js"></script>
+      <script type="text/javascript">
+
+
+/******************************************************************************
+    Worker
+ *****************************************************************************/
+function MyWorker(url) {
+    this.msgId = 0;
+    this.queue = [];
+    this.worker = new Worker('lib/base/worker-base.js');
+    this.worker.addEventListener('message', e => this.onmessage(e));
+    this.postMessage({msg:'initialize', data:{module:url, app:document.location.href, root:rootUrl.toString(), path:[baseUrl.toString(), ...Resource.searchPath]}});
+}
+MyWorker.prototype.peekMessage = function(key, value) {
+    for (var i=0; i<this.queue.length; i++) {
+        var item = this.queue[i];
+        if (key == undefined || item[key] == value) {
+            return item;
+        }
+    }
+    return null;
+};
+MyWorker.prototype.getMessage = async function(key, value, retry) {
+    return await poll( () => {
+        for (var i=0; i<this.queue.length; i++) {
+            var item = this.queue[i];
+            if (key == undefined || item[key] == value) {
+                this.queue.splice(i, 1);
+                console.log(`Msg #${item.id} de-queued`);
+                return item;
+            }
+        }
+        if (retry-- == 0) return true;
+        return null;
+    });
+};
+MyWorker.prototype.postMessage = function(msg) {
+    msg.id = this.msgId;
+    this.worker.postMessage(msg);
+};
+MyWorker.prototype.sendMessage = async function(msg) {
+    var id = this.msgId;
+    this.postMessage(msg);
+    await poll(() => {
+        return this.peekMessage('id', id) != null;
+    });
+    var result = this.getMessage('id', id);
+    return result;
+};
+MyWorker.prototype.onmessage = function(e) {
+    var msg = e.data;
+    switch (msg.code) {
+        case 'kill':
+            console.log('Kill signal received')
+            this.worker.terminate();
+            break;
+        case 'dbg':
+            Dbg.prln(msg.text);
+            msg = null;
+            break;
+    }
+    if (msg) {
+        console.log(`Msg #${msg.id} queued`);
+        this.queue.push(msg);
+    }
+};
+/*****************************************************************************/
+
+var _worker = null;
+var _con = null;
+
+async function onpageload() {
+    await include('/lib/base/dbg.js');
+    Dbg.init('con');
+    _worker = new MyWorker(appUrl+'/worker-test.js');
+    var result = await _worker.getMessage('id', 0);
+    Dbg.prln(result.data);
+};
+      </script>
+  </head>
+  <body>
+      <div id="con"></div>
+  </body>
+</html>
